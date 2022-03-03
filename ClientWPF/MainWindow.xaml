@@ -9,7 +9,7 @@
         xmlns:ViewModels="clr-namespace:Binance.Net.ClientWPF.ViewModels" x:Class="Binance.Net.ClientWPF.MainWindow"
         mc:Ignorable="d"
         x:Name="Main"
-        Title="Binance" Height="1300" Width="1600">
+        Title="Athena" Height="1300" Width="1600">
     <Window.Resources>
         <ResourceDictionary>
             <BitmapImage x:Key="Settings" UriSource="Resources/settings.png"/>
@@ -19,21 +19,23 @@
         </ResourceDictionary>
     </Window.Resources>
     <Window.DataContext>
-        <local:MainViewModel />
+        <local:MainViewModel/>
     </Window.DataContext>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="420" />
-            <ColumnDefinition Width="650" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+    <TabControl>
+        <TabItem Header="Terminal">
+            <Grid Height="1284" Width="1600" Margin="0,0,-6,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="420" />
+                    <ColumnDefinition Width="650" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="650" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="650" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
 
-        <Button Grid.Column="1" 
+                <Button Grid.Column="1" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top" 
                 Width="32" Height="32" 
@@ -42,35 +44,31 @@
                 BorderThickness="0" 
                 Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                 Command="{Binding SettingsCommand}">
-            <Image Source="{StaticResource Settings}"/>
-        </Button>
+                    <Image Source="{StaticResource Settings}"/>
+                </Button>
 
-        <ListView Grid.Row="0" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding AllPrices}" SelectedItem="{Binding SelectedSymbol}">
-            <ListView.Resources>
-                <Style x:Key="MACDStyle" TargetType="{x:Type ListViewItem}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding MACDStatus}" Value="Growing">
-                            <Setter Property="Background" Value="Green" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListView.Resources>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName}" Value="Growing">
-                            <Setter Property="Background" Value="Green" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="50" Header="Asset" DisplayMemberBinding="{Binding SymbolAsset}"/>
-                    <GridViewColumn Width="50" Header="Currency" DisplayMemberBinding="{Binding SymbolCurrency}"/>
-                    <GridViewColumn Width="120" Header="Price" DisplayMemberBinding="{Binding Price, StringFormat=\{0:#\,#.00000000\}}"/>
-
-                    <!--
+                <ListView Grid.Row="0" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding AllPrices}" SelectedItem="{Binding SelectedSymbol}">
+                    <ListView.Resources>
+                        <Style x:Key="MACDStyle" TargetType="{x:Type ListViewItem}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MACDStatus}" Value="Growing">
+                                    <Setter Property="Background" Value="Green" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName}" Value="Growing">
+                                    <Setter Property="Background" Value="Green" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <!--
                     <GridViewColumn Width="80" Header="MACD">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -81,7 +79,11 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     -->
-                    <!--
+                            <GridViewColumn Width="50" Header="Asset" DisplayMemberBinding="{Binding SymbolAsset}"/>
+                            <GridViewColumn Width="50" Header="Currency" DisplayMemberBinding="{Binding SymbolCurrency}"/>
+                            <GridViewColumn Width="120" Header="Price" DisplayMemberBinding="{Binding Price, StringFormat=\{0:#\,#.00000000\}}"/>
+
+                            <!--
                     <Style TargetType="{x:Type ListViewItem}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding MACDStatus}" Value="Growing">
@@ -90,194 +92,235 @@
                         </Style.Triggers>
                     </Style>
                     -->
-                    <GridViewColumn Width="80" Header="MACD" DisplayMemberBinding="{Binding MACDStatus, NotifyOnTargetUpdated=True}" />
-                    <!--<GridViewColumn Width="80" Header="MACD" DisplayMemberBinding="{Binding MACDStatus, NotifyOnTargetUpdated=True}" />-->
-                    <GridViewColumn Width="80" Header="RSI" DisplayMemberBinding="{Binding RSIStatus, NotifyOnTargetUpdated=True}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+                            <GridViewColumn Width="80" Header="MACD" DisplayMemberBinding="{Binding MACDStatus, NotifyOnTargetUpdated=True}" />
+                            <!--<GridViewColumn Width="80" Header="MACD" DisplayMemberBinding="{Binding MACDStatus, NotifyOnTargetUpdated=True}" />-->
+                            <GridViewColumn Width="80" Header="RSI" DisplayMemberBinding="{Binding RSIStatus, NotifyOnTargetUpdated=True}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
 
-        <controls:SymbolUserControl Grid.Column="1" Grid.Row="0" Visibility="{Binding SymbolIsSelected, Converter={StaticResource BoolToVis}}"/>
+                <controls:SymbolUserControl Grid.Column="1" Grid.Row="0" Visibility="{Binding SymbolIsSelected, Converter={StaticResource BoolToVis}}"/>
 
-        <Grid Grid.Column="2"  Grid.Row="0" Grid.RowSpan="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+                <Grid Grid.Column="2"  Grid.Row="0" Grid.RowSpan="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
-            <ScrollBar Grid.Column="0" Orientation="Vertical" Minimum="1" Maximum="{Binding SelectedSymbol.ChartZoomUpperBound}" Value="{Binding SelectedSymbol.ChartVisibleSteps, Mode=TwoWay}" ViewportSize="100" />
+                    <ScrollBar Grid.Column="0" Orientation="Vertical" Minimum="1" Maximum="{Binding SelectedSymbol.ChartZoomUpperBound}" Value="{Binding SelectedSymbol.ChartVisibleSteps, Mode=TwoWay}" ViewportSize="100" />
 
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <!--
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!--
                 <StackPanel Grid.Row="0">
                     <TextBlock Text="Candle Interval" />
                     <ComboBox  />
                 </StackPanel>
 -->
-                <ScrollBar Grid.Row="1" Orientation="Horizontal" Minimum="0" Maximum="{Binding SelectedSymbol.ChartMaxSteps}" Value="{Binding SelectedSymbol.ChartCurrentSpot, Mode=TwoWay}" ViewportSize="{Binding SelectedSymbol.ChartVisibleSteps}" />
+                        <ScrollBar Grid.Row="1" Orientation="Horizontal" Minimum="0" Maximum="{Binding SelectedSymbol.ChartMaxSteps}" Value="{Binding SelectedSymbol.ChartCurrentSpot, Mode=TwoWay}" ViewportSize="{Binding SelectedSymbol.ChartVisibleSteps}" />
 
-                <GroupBox Grid.Row="2" Header="Candles">
-                    <Grid Visibility="{Binding SelectedSymbol, Converter={StaticResource NullToVisibilityConverter}}">
-                        <lvc:CartesianChart Series="{Binding SelectedSymbol.CandleSticks}" Visibility="{Binding SelectedSymbol.CandleSticks, Converter={StaticResource NullToVisibilityConverter}}" AnimationsSpeed="0:0:0.01">
-                            <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Labels="{Binding SelectedSymbol.ChartHourLabels}" MinValue="{Binding SelectedSymbol.ChartCurrentSpot}" MaxValue="{Binding SelectedSymbol.ChartCurrentEndSpot}">
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator IsEnabled="False" Step="4"/>
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                                <lvc:Axis Labels="{Binding SelectedSymbol.ChartDateLabels}">
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator IsEnabled="False" Step="24"/>
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisX>
-                            <lvc:CartesianChart.AxisY>
-                                <lvc:Axis LabelFormatter="{Binding NumberFormatter}" IsMerged="True" />
-                            </lvc:CartesianChart.AxisY>
-                        </lvc:CartesianChart>
+                        <GroupBox Grid.Row="2" Header="Candles">
+                            <Grid Visibility="{Binding SelectedSymbol, Converter={StaticResource NullToVisibilityConverter}}">
+                                <lvc:CartesianChart Series="{Binding SelectedSymbol.CandleSticks}" Visibility="{Binding SelectedSymbol.CandleSticks, Converter={StaticResource NullToVisibilityConverter}}" AnimationsSpeed="0:0:0.01">
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis Labels="{Binding SelectedSymbol.ChartHourLabels}" MinValue="{Binding SelectedSymbol.ChartCurrentSpot}" MaxValue="{Binding SelectedSymbol.ChartCurrentEndSpot}">
+                                            <lvc:Axis.Separator>
+                                                <lvc:Separator IsEnabled="False" Step="4"/>
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                        <lvc:Axis Labels="{Binding SelectedSymbol.ChartDateLabels}">
+                                            <lvc:Axis.Separator>
+                                                <lvc:Separator IsEnabled="False" Step="24"/>
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis LabelFormatter="{Binding NumberFormatter}" IsMerged="True" />
+                                    </lvc:CartesianChart.AxisY>
+                                </lvc:CartesianChart>
 
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="3" Header="MACD">
+                            <Grid Visibility="{Binding SelectedSymbol, Converter={StaticResource NullToVisibilityConverter}}">
+                                <lvc:CartesianChart Series="{Binding SelectedSymbol.MACDPlot}" Visibility="{Binding SelectedSymbol.MACDPlot, Converter={StaticResource NullToVisibilityConverter}}" AnimationsSpeed="0:0:0.01">
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis Labels="{Binding SelectedSymbol.ChartHourLabels}" MinValue="{Binding SelectedSymbol.ChartCurrentSpot}" MaxValue="{Binding SelectedSymbol.ChartCurrentEndSpot}">
+                                            <lvc:Axis.Separator>
+                                                <lvc:Separator IsEnabled="False" Step="4" />
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                        <lvc:Axis Labels="{Binding SelectedSymbol.ChartDateLabels}">
+                                            <lvc:Axis.Separator>
+                                                <lvc:Separator IsEnabled="False" Step="24" />
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis LabelFormatter="{Binding NumberFormatter}" IsMerged="True">
+                                            <lvc:Axis.Sections>
+                                                <lvc:AxisSection Value="-1" SectionWidth="1" Label="Over-Bought">
+                                                    <lvc:AxisSection.Fill>
+                                                        <SolidColorBrush Color="PaleVioletRed" Opacity=".4"/>
+                                                    </lvc:AxisSection.Fill>
+                                                </lvc:AxisSection>
+                                                <lvc:AxisSection Value="0" StrokeThickness="1" Label="Over-Bought">
+                                                    <lvc:AxisSection.Fill>
+                                                        <SolidColorBrush Color="Black" Opacity="1"/>
+                                                    </lvc:AxisSection.Fill>
+                                                </lvc:AxisSection>
+                                            </lvc:Axis.Sections>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                </lvc:CartesianChart>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Grid.Row="4" Header="RSI">
+                            <Grid Visibility="{Binding SelectedSymbol, Converter={StaticResource NullToVisibilityConverter}}">
+                                <lvc:CartesianChart Series="{Binding SelectedSymbol.RSIPlot}" Visibility="{Binding SelectedSymbol.RSIPlot, Converter={StaticResource NullToVisibilityConverter}}" AnimationsSpeed="0:0:0.01">
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis Labels="{Binding SelectedSymbol.ChartHourLabels}" MinValue="{Binding SelectedSymbol.ChartCurrentSpot}" MaxValue="{Binding SelectedSymbol.ChartCurrentEndSpot}">
+                                            <lvc:Axis.Separator>
+                                                <lvc:Separator IsEnabled="False" Step="4" />
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                        <lvc:Axis Labels="{Binding SelectedSymbol.ChartDateLabels}">
+                                            <lvc:Axis.Separator>
+                                                <lvc:Separator IsEnabled="False" Step="24" />
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis LabelFormatter="{Binding NumberFormatter}" IsMerged="True" MinValue="0" MaxValue="100">
+                                            <lvc:Axis.Sections>
+                                                <lvc:AxisSection Value="0" SectionWidth="30" Label="Over-Bought">
+                                                    <lvc:AxisSection.Fill>
+                                                        <SolidColorBrush Color="PaleVioletRed" Opacity=".4"/>
+                                                    </lvc:AxisSection.Fill>
+                                                </lvc:AxisSection>
+                                                <lvc:AxisSection Value="70" SectionWidth="30" Label="Over-Sold">
+                                                    <lvc:AxisSection.Fill>
+                                                        <SolidColorBrush Color="PaleGreen" Opacity=".4"/>
+                                                    </lvc:AxisSection.Fill>
+                                                </lvc:AxisSection>
+
+                                                <lvc:AxisSection Value="30" StrokeThickness="3">
+                                                    <lvc:AxisSection.Fill>
+                                                        <SolidColorBrush Color="Black" Opacity="1"/>
+                                                    </lvc:AxisSection.Fill>
+                                                </lvc:AxisSection>
+                                                <lvc:AxisSection Value="70" StrokeThickness="3">
+                                                    <lvc:AxisSection.Fill>
+                                                        <SolidColorBrush Color="Black" Opacity="1"/>
+                                                    </lvc:AxisSection.Fill>
+                                                </lvc:AxisSection>
+                                            </lvc:Axis.Sections>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                </lvc:CartesianChart>
+                            </Grid>
+                        </GroupBox>
                     </Grid>
-                </GroupBox>
+                </Grid>
+                <Grid Grid.Column="1"  Grid.Row="1" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <TextBlock Text="Ledger" FontSize="20"/>
+                        </GroupBox.Header>
+                        <ListView Grid.Row="0" Margin="5" ItemsSource="{Binding Ledger, NotifyOnTargetUpdated=True}" SelectedItem="{Binding SelectedLedgerAsset}" SourceUpdated="Grid_Updated" TargetUpdated="Grid_Updated" ButtonBase.Click="SortClick">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="50" Header="Asset" DisplayMemberBinding="{Binding Asset}"/>
+                                    <GridViewColumn Width="50" Header="Held" DisplayMemberBinding="{Binding Amount, StringFormat=\{0:#\,#0.#########\}}"/>
+                                    <GridViewColumn Width="50" Header="Coin Value (USD)" DisplayMemberBinding="{Binding CoinValueUSD, StringFormat=\{0:#\,#0.00\}}"/>
+                                    <GridViewColumn Width="50" Header="Coin Value (BTC)" DisplayMemberBinding="{Binding CoinValueBTC, StringFormat=\{0:#\,#0.#########\}}"/>
+                                    <GridViewColumn Width="50" Header="Value (USD)" DisplayMemberBinding="{Binding ValueUSD, StringFormat=\{0:#\,#0.00\}}" />
+                                    <GridViewColumn Width="50" Header="Value (BTC)" DisplayMemberBinding="{Binding ValueBTC, StringFormat=\{0:#\,#0.#########\}}"/>
+                                    <GridViewColumn Width="50" Header="Cost (USD)" DisplayMemberBinding="{Binding CostUSD, StringFormat=\{0:#\,#0.00\}}"/>
+                                    <GridViewColumn Width="50" Header="Cost (BTC)" DisplayMemberBinding="{Binding CostBTC, StringFormat=\{0:#\,#0.#########\}}"/>
+                                    <GridViewColumn Width="50" Header="Gains %" DisplayMemberBinding="{Binding GainsPercentageText}"/>
+                                    <GridViewColumn Width="90" Header="GainsUSD" DisplayMemberBinding="{Binding GainsUSD, StringFormat=\{0:#\,#0.00\}}"/>
+                                    <GridViewColumn Width="120" Header="MACD (BTC)" DisplayMemberBinding="{Binding MACDBTC}"/>
+                                    <GridViewColumn Width="120" Header="RSI (BTC)" DisplayMemberBinding="{Binding RSIBTC, NotifyOnTargetUpdated=True}" />
+                                    <GridViewColumn Width="120" Header="MACD (ETH)" DisplayMemberBinding="{Binding MACDETH}"/>
+                                    <GridViewColumn Width="120" Header="RSI (ETH)" DisplayMemberBinding="{Binding RSIETH}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </GroupBox>
 
-                <GroupBox Grid.Row="3" Header="MACD">
-                    <Grid Visibility="{Binding SelectedSymbol, Converter={StaticResource NullToVisibilityConverter}}">
-                        <lvc:CartesianChart Series="{Binding SelectedSymbol.MACDPlot}" Visibility="{Binding SelectedSymbol.MACDPlot, Converter={StaticResource NullToVisibilityConverter}}" AnimationsSpeed="0:0:0.01">
-                            <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Labels="{Binding SelectedSymbol.ChartHourLabels}" MinValue="{Binding SelectedSymbol.ChartCurrentSpot}" MaxValue="{Binding SelectedSymbol.ChartCurrentEndSpot}">
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator IsEnabled="False" Step="4" />
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                                <lvc:Axis Labels="{Binding SelectedSymbol.ChartDateLabels}">
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator IsEnabled="False" Step="24" />
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisX>
-                            <lvc:CartesianChart.AxisY>
-                                <lvc:Axis LabelFormatter="{Binding NumberFormatter}" IsMerged="True">
-                                    <lvc:Axis.Sections>
-                                        <lvc:AxisSection Value="-1" SectionWidth="1" Label="Over-Bought">
-                                            <lvc:AxisSection.Fill>
-                                                <SolidColorBrush Color="PaleVioletRed" Opacity=".4"></SolidColorBrush>
-                                            </lvc:AxisSection.Fill>
-                                        </lvc:AxisSection>
-                                        <lvc:AxisSection Value="0" StrokeThickness="1" Label="Over-Bought">
-                                            <lvc:AxisSection.Fill>
-                                                <SolidColorBrush Color="Black" Opacity="1"></SolidColorBrush>
-                                            </lvc:AxisSection.Fill>
-                                        </lvc:AxisSection>
-                                    </lvc:Axis.Sections>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisY>
-                        </lvc:CartesianChart>
-                    </Grid>
-                </GroupBox>
-                <GroupBox Grid.Row="4" Header="RSI">
-                    <Grid Visibility="{Binding SelectedSymbol, Converter={StaticResource NullToVisibilityConverter}}">
-                        <lvc:CartesianChart Series="{Binding SelectedSymbol.RSIPlot}" Visibility="{Binding SelectedSymbol.RSIPlot, Converter={StaticResource NullToVisibilityConverter}}" AnimationsSpeed="0:0:0.01">
-                            <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Labels="{Binding SelectedSymbol.ChartHourLabels}" MinValue="{Binding SelectedSymbol.ChartCurrentSpot}" MaxValue="{Binding SelectedSymbol.ChartCurrentEndSpot}">
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator IsEnabled="False" Step="4" />
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                                <lvc:Axis Labels="{Binding SelectedSymbol.ChartDateLabels}">
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator IsEnabled="False" Step="24" />
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisX>
-                            <lvc:CartesianChart.AxisY>
-                                <lvc:Axis LabelFormatter="{Binding NumberFormatter}" IsMerged="True" MinValue="0" MaxValue="100">
-                                    <lvc:Axis.Sections>
-                                        <lvc:AxisSection Value="0" SectionWidth="30" Label="Over-Bought">
-                                            <lvc:AxisSection.Fill>
-                                                <SolidColorBrush Color="PaleVioletRed" Opacity=".4"></SolidColorBrush>
-                                            </lvc:AxisSection.Fill>
-                                        </lvc:AxisSection>
-                                        <lvc:AxisSection Value="70" SectionWidth="30" Label="Over-Sold">
-                                            <lvc:AxisSection.Fill>
-                                                <SolidColorBrush Color="PaleGreen" Opacity=".4"></SolidColorBrush>
-                                            </lvc:AxisSection.Fill>
-                                        </lvc:AxisSection>
-
-                                        <lvc:AxisSection Value="30" StrokeThickness="3">
-                                            <lvc:AxisSection.Fill>
-                                                <SolidColorBrush Color="Black" Opacity="1"></SolidColorBrush>
-                                            </lvc:AxisSection.Fill>
-                                        </lvc:AxisSection>
-                                        <lvc:AxisSection Value="70" StrokeThickness="3">
-                                            <lvc:AxisSection.Fill>
-                                                <SolidColorBrush Color="Black" Opacity="1"></SolidColorBrush>
-                                            </lvc:AxisSection.Fill>
-                                        </lvc:AxisSection>
-                                    </lvc:Axis.Sections>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisY>
-                        </lvc:CartesianChart>
-                    </Grid>
-                </GroupBox>
+                    <GroupBox Grid.Row="2">
+                        <GroupBox.Header>
+                            <TextBlock Text="Ledger Trades" FontSize="20"/>
+                        </GroupBox.Header>
+                        <ListView Grid.Row="0" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding SelectedLedgerAsset.Trades, NotifyOnTargetUpdated=True}" SelectedItem="{Binding SelectedLedgerTrade}" TargetUpdated="Grid_Updated" ButtonBase.Click="SortClick">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="50" Header="Asset" DisplayMemberBinding="{Binding SymbolAsset}"/>
+                                    <GridViewColumn Width="50" Header="Currency" DisplayMemberBinding="{Binding SymbolCurrency}"/>
+                                    <GridViewColumn Width="50" Header="Buy/Sell" DisplayMemberBinding="{Binding BuySell}"/>
+                                    <GridViewColumn Width="50" Header="Maker" DisplayMemberBinding="{Binding IsMaker}"/>
+                                    <GridViewColumn Width="130" Header="Date" DisplayMemberBinding="{Binding Time}"/>
+                                    <GridViewColumn Width="90" Header="Rate" DisplayMemberBinding="{Binding Price}"/>
+                                    <GridViewColumn Width="120" Header="Quantity" DisplayMemberBinding="{Binding Quantity, StringFormat=\{0:#\,#0.##########\}}"/>
+                                    <GridViewColumn Width="90" Header="Current Price" DisplayMemberBinding="{Binding CurrencyCurrentValue}"/>
+                                    <GridViewColumn Width="90" Header="Change" DisplayMemberBinding="{Binding PercentChange}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </GroupBox>
+                </Grid>
             </Grid>
-        </Grid>
-        <Grid Grid.Column="1"  Grid.Row="1" Grid.ColumnSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <GroupBox>
-                <GroupBox.Header>
-                    <TextBlock Text="Ledger" FontSize="20"/>
-                </GroupBox.Header>
-                <ListView Grid.Row="0" Margin="5" ItemsSource="{Binding Ledger, NotifyOnTargetUpdated=True}" SelectedItem="{Binding SelectedLedgerAsset}" SourceUpdated="Grid_Updated" TargetUpdated="Grid_Updated" ButtonBase.Click="SortClick">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="50" Header="Asset" DisplayMemberBinding="{Binding Asset}"/>
-                            <GridViewColumn Width="50" Header="Held" DisplayMemberBinding="{Binding Amount, StringFormat=\{0:#\,#0.#########\}}"/>
-                            <GridViewColumn Width="50" Header="Coin Value (USD)" DisplayMemberBinding="{Binding CoinValueUSD, StringFormat=\{0:#\,#0.00\}}"/>
-                            <GridViewColumn Width="50" Header="Coin Value (BTC)" DisplayMemberBinding="{Binding CoinValueBTC, StringFormat=\{0:#\,#0.#########\}}"/>
-                            <GridViewColumn Width="50" Header="Value (USD)" DisplayMemberBinding="{Binding ValueUSD, StringFormat=\{0:#\,#0.00\}}" />
-                            <GridViewColumn Width="50" Header="Value (BTC)" DisplayMemberBinding="{Binding ValueBTC, StringFormat=\{0:#\,#0.#########\}}"/>
-                            <GridViewColumn Width="50" Header="Cost (USD)" DisplayMemberBinding="{Binding CostUSD, StringFormat=\{0:#\,#0.00\}}"/>
-                            <GridViewColumn Width="50" Header="Cost (BTC)" DisplayMemberBinding="{Binding CostBTC, StringFormat=\{0:#\,#0.#########\}}"/>
-                            <GridViewColumn Width="50" Header="Gains %" DisplayMemberBinding="{Binding GainsPercentageText}"/>
-                            <GridViewColumn Width="90" Header="GainsUSD" DisplayMemberBinding="{Binding GainsUSD, StringFormat=\{0:#\,#0.00\}}"/>
-                            <GridViewColumn Width="120" Header="MACD (BTC)" DisplayMemberBinding="{Binding MACDBTC}"/>
-                            <GridViewColumn Width="120" Header="RSI (BTC)" DisplayMemberBinding="{Binding RSIBTC, NotifyOnTargetUpdated=True}" />
-                            <GridViewColumn Width="120" Header="MACD (ETH)" DisplayMemberBinding="{Binding MACDETH}"/>
-                            <GridViewColumn Width="120" Header="RSI (ETH)" DisplayMemberBinding="{Binding RSIETH}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </GroupBox>
-
-            <GroupBox Grid.Row="2">
-                <GroupBox.Header>
-                    <TextBlock Text="Ledger Trades" FontSize="20"/>
-                </GroupBox.Header>
-                <ListView Grid.Row="0" Grid.RowSpan="2" Margin="5" ItemsSource="{Binding SelectedLedgerAsset.Trades, NotifyOnTargetUpdated=True}" SelectedItem="{Binding SelectedLedgerTrade}" TargetUpdated="Grid_Updated" ButtonBase.Click="SortClick">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="50" Header="Asset" DisplayMemberBinding="{Binding SymbolAsset}"/>
-                            <GridViewColumn Width="50" Header="Currency" DisplayMemberBinding="{Binding SymbolCurrency}"/>
-                            <GridViewColumn Width="50" Header="Buy/Sell" DisplayMemberBinding="{Binding BuySell}"/>
-                            <GridViewColumn Width="50" Header="Maker" DisplayMemberBinding="{Binding IsMaker}"/>
-                            <GridViewColumn Width="130" Header="Date" DisplayMemberBinding="{Binding Time}"/>
-                            <GridViewColumn Width="90" Header="Rate" DisplayMemberBinding="{Binding Price}"/>
-                            <GridViewColumn Width="120" Header="Quantity" DisplayMemberBinding="{Binding Quantity, StringFormat=\{0:#\,#0.##########\}}"/>
-                            <GridViewColumn Width="90" Header="Current Price" DisplayMemberBinding="{Binding CurrencyCurrentValue}"/>
-                            <GridViewColumn Width="90" Header="Change" DisplayMemberBinding="{Binding PercentChange}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </GroupBox>
-        </Grid>
-    </Grid>
+        </TabItem>
+        <TabItem Header="Designer">
+            <TabControl>
+                <TabItem Header="Backtesting">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="Live">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem HorizontalAlignment="Center" Height="20" Header="Strategies Gallery" VerticalAlignment="Top" Width="96" Margin="0,-1,0,0">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
+        </TabItem>
+        <TabItem HorizontalAlignment="Center" Height="20" Header="Data" VerticalAlignment="Center" Width="54">
+            <TabControl>
+                <TabItem Header="Browser">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="Favorites">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
+        </TabItem>
+        <TabItem HorizontalAlignment="Center" Height="20" Header="Community" VerticalAlignment="Top" Width="80" Margin="0,-1,0,0">
+            <TabControl>
+                <TabItem Header="Feed">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="Profile">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem HorizontalAlignment="Center" Height="20" Header="Friends" VerticalAlignment="Center" Width="54">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
+        </TabItem>
+        <TabItem HorizontalAlignment="Center" Height="20" Header="News" VerticalAlignment="Center" Width="54">
+            <Grid Background="#FFE5E5E5"/>
+        </TabItem>
+    </TabControl>
 </Window>

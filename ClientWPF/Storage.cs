@@ -54,38 +54,23 @@ namespace Binance.Net.ClientWPF
                 rebuildTables.Add(sql);
             }
 
-            // Make sure DB exists
-            if (!File.Exists(binanceLocation))
+
+
+            List<string> sqlQueue = new List<string>();
+            bool executingSQL = false;
+            void AddSQLToQueue(string sql)
             {
-                SQLiteConnection.CreateFile(binanceLocation);
+                if(executingSQL)
+                {
+                    sqlQueue.Add(sql);
+                }
+                else
+                {
+                    DBConnection.Open();
+                    
+                }
+            
             }
-
-            DBConnection = new SQLiteConnection($"Data Source={binanceLocation};Version=3;");
-            DBConnection.Open();
-
-            foreach (var sql in rebuildTables)
-            {
-                SQLiteCommand command = new SQLiteCommand(sql, DBConnection);
-                command.ExecuteNonQueryAsync();
-            }
-
-            DBConnection.Close();
         }
-
-        //List<string> sqlQueue = new List<string>();
-        //bool executingSQL = false;
-        //public void AddSQLToQueue(string sql)
-        //{
-        //    if(executingSQL)
-        //    {
-        //        sqlQueue.Add(sql);
-        //    }
-        //    else
-        //    {
-        //        DBConnection.Open();
-        //        DBConnection
-        //    }
-        //
-        //}
     }
 }
